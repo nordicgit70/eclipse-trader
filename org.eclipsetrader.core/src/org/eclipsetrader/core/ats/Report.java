@@ -88,12 +88,6 @@ public class Report {
                 if (amount == 0.0) {
                     continue;
                 }
-                if (equityData.size() != 0) {
-                    EquityData lastData = equityData.get(equityData.size() - 1);
-                    if (lastData.amount == amount) {
-                        continue;
-                    }
-                }
                 equityData.add(new EquityData(((IBar) delta.getNewValue()).getDate(), amount));
             }
         }
