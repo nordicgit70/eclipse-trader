@@ -169,6 +169,7 @@ public class JavaScriptEngineInstrument {
     }
 
     public void onStrategyStart() {
+        log.info("onStrategyStart: Start trading strategy");
         Context cx = Context.enter();
         try {
             Object obj = scope.get(FUNCTION_ON_STRATEGY_START, scope);
@@ -222,6 +223,7 @@ public class JavaScriptEngineInstrument {
     }
 
     public void onBar(IBar bar) {
+        log.info("onBar: " + bar);
         Context cx = Context.enter();
         try {
             bars.append(bar);
@@ -303,6 +305,7 @@ public class JavaScriptEngineInstrument {
     }
 
     public void backfill(int backfillBars) {
+        log.info("backfill: " + backfillBars);
         BundleContext context = CoreActivator.getDefault().getBundle().getBundleContext();
         ServiceReference<IRepositoryService> serviceReference = context.getServiceReference(IRepositoryService.class);
         if (serviceReference != null) {
