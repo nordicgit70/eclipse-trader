@@ -24,6 +24,7 @@ import java.util.Set;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipsetrader.yahoo.internal.YahooActivator;
@@ -70,6 +71,8 @@ public class StreamingConnector extends SnapshotConnector {
         try {
             HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
             client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
+            client.getParams().setParameter("http.protocol.single-cookie-header", true);
+            client.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
             Util.setupProxy(client, Util.streamingFeedHost);
 
             HttpMethod method = null;

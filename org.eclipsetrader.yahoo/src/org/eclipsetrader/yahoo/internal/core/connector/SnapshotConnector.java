@@ -29,6 +29,7 @@ import java.util.TimeZone;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
@@ -214,6 +215,8 @@ public class SnapshotConnector implements Runnable, IFeedConnector, IExecutableE
         try {
             HttpClient client = new HttpClient();
             client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
+            client.getParams().setParameter("http.protocol.single-cookie-header", true);
+            client.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
             Util.setupProxy(client, Util.snapshotFeedHost);
 
             synchronized (thread) {
