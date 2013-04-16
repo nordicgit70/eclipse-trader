@@ -89,6 +89,7 @@ public class JavaScriptEngineInstrument {
             ScriptableObject.defineClass(scope, LimitOrderFunction.class);
             ScriptableObject.defineClass(scope, MarketOrderFunction.class);
             ScriptableObject.defineClass(scope, HasPositionFunction.class);
+            ScriptableObject.defineClass(scope, ConsoleLogFunction.class);
             defineClasses();
 
             ScriptableObject.putProperty(scope, BaseOrderFunction.PROPERTY_INSTRUMENT, Context.javaToJS(instrument, scope));
@@ -318,6 +319,7 @@ public class JavaScriptEngineInstrument {
             for (int i = 0; i < timeSpan.length; i++) {
                 if (timeSpan[i].equals(TimeSpan.days(1))) {
                     for (int index = ohlc.length - backfillBars; index < ohlc.length; index++) {
+                        log.info("backfill-index Append: " + index);
                         bars.append(new Bar(ohlc[index].getDate(), timeSpan[i], ohlc[index].getOpen(), ohlc[index].getHigh(), ohlc[index].getLow(), ohlc[index].getClose(), ohlc[index].getVolume()));
                     }
                 }
@@ -327,6 +329,7 @@ public class JavaScriptEngineInstrument {
                         IHistory subHistory = history.getSubset(ohlc[index].getDate(), ohlc[index].getDate(), timeSpan[i]);
                         IOHLC[] subOhlc = subHistory.getOHLC();
                         for (int ii = subOhlc.length - 1; ii >= 0 && filled < backfillBars; ii--) {
+                            log.info("backfill-index Prepend: " + index);
                             bars.prepend(new Bar(subOhlc[ii].getDate(), timeSpan[i], subOhlc[ii].getOpen(), subOhlc[ii].getHigh(), subOhlc[ii].getLow(), subOhlc[ii].getClose(), subOhlc[ii].getVolume()));
                             filled++;
                         }
