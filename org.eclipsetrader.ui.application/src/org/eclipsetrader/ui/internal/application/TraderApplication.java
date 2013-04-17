@@ -32,7 +32,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class TraderApplication implements IApplication {
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
      * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
      */
     @Override
@@ -42,7 +42,7 @@ public class TraderApplication implements IApplication {
             Shell shell = new Shell(display, SWT.ON_TOP);
             try {
                 if (!checkInstanceLocation(shell)) {
-                    Platform.endSplash();
+                	 context.applicationRunning();
                     return EXIT_OK;
                 }
             } finally {
@@ -89,8 +89,10 @@ public class TraderApplication implements IApplication {
      * Return true if a valid workspace path has been set and false otherwise.
      *
      * @return true if a valid instance location has been set and false otherwise
+     * @throws IOException 
+     * @throws IllegalStateException 
      */
-    private boolean checkInstanceLocation(Shell shell) {
+    private boolean checkInstanceLocation(Shell shell) throws IllegalStateException, IOException {
         Location instanceLoc = Platform.getInstanceLocation();
 
         // -data @none was specified but workspace is required
@@ -136,7 +138,7 @@ public class TraderApplication implements IApplication {
             // Don't use File.toURL() since it adds a leading slash that Platform does not
             // handle properly.  See bug 54081 for more details.
             String path = workspace.getAbsolutePath().replace(File.separatorChar, '/');
-            instanceLoc.setURL(new URL("file", null, path), true);
+            instanceLoc.set(new URL("file", null, path), true);
             return true;
         } catch (MalformedURLException e) {
             Activator.log("Selected workspace is not valid", e);
