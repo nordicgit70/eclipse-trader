@@ -77,7 +77,7 @@ public class FeedIdentifier extends PlatformObject implements IFeedIdentifier, P
      * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
      */
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Object getAdapter(Class adapter) {
         if (adapter.isAssignableFrom(this.getClass())) {
             return this;
